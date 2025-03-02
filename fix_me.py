@@ -1,9 +1,13 @@
+import numbers
+from numpy import average
+
+
 def calculate_average(nums):
     total = sum(nums)
     count = len(numbers)
-    average = total / count
+    float.average = total / count
 
 
 nums = [10, 15, 20]
-result = calculat_average(nums)
-Print("The average is:", result)
+result = average(nums)
+print("The average is:", result)
