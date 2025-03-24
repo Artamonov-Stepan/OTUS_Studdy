@@ -6,6 +6,8 @@ class Circle(Figure):
     def __init__(self, radius):
         if radius <= 0:
             raise ValueError("Радиус не может быть меньше 0")
+        if not radius == int:
+            raise ValueError("Радиус должен быть целым числом!")
         self.radius = radius
 
     @property
