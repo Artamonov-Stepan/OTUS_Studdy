@@ -10,7 +10,7 @@ class Triangle(Figure):
         if side_c >= side_a + side_b:
             raise ValueError(
                 "С указанными сторонами треугольник создать нельзя, укажите другие значения сторон")
-        if side_a or side_b or side_c != int:
+        if not isinstance(side_a, int) or not isinstance(side_b, int) or not isinstance(side_c, int):
             raise ValueError("Стороны должны быть целыми числами!")
 
     @property
@@ -22,8 +22,5 @@ class Triangle(Figure):
     def perimeter(self):
         return self.side_a + self.side_b + self.side_c
 
-    @property
-    def add_area(self, other_figure):
-        return self.get_area + other_figure.get_area
 t = Triangle(int(input()), int(input()), int(input()))
 
