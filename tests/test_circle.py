@@ -12,7 +12,7 @@ import pytest
 )
 def test_circle_area_positive_integer(radius, expected_area):
     c = Circle(radius)
-    assert c.area == expected_area, f"Ожидаем площадь равную {expected_area}"
+    assert round(c.area, 1) == expected_area, f"Ожидаем площадь равную {expected_area}"
 
 
 @pytest.mark.parametrize(

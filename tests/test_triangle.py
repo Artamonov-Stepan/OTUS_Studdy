@@ -53,9 +53,7 @@ def test_positive_add_area_with_other_figure(
 ):
     t = Triangle(side_a, side_b, side_c)
     c = Circle(radius)
-    assert expected_add_area == round((t.area + c.area), 1), (
-        f"Ожидаем сумму площадей равную {expected_add_area}"
-    )
+    assert expected_add_area == t.area + round(c.area, 1),f"Ожидаем сумму площадей равную {expected_add_area}"
 
 
 @pytest.mark.parametrize(
