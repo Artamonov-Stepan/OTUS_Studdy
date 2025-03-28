@@ -2,16 +2,17 @@ from src.circle import Circle
 from src.square import Square
 import pytest
 
-
 @pytest.mark.parametrize(
     "side_a, expected_area",
     [
         (5, 25),
     ],
 )
+
 def test_square_area_positive_integer(side_a, expected_area):
     s = Square(side_a)
     assert s.area == expected_area, f"Ожидаем площадь равную {expected_area}"
+
 
 
 @pytest.mark.parametrize(
@@ -46,10 +47,12 @@ def test_positive_add_area_with_other_figure(side_a, radius, expected_add_area):
     [(5.5, ValueError), (-5, ValueError), (0, ValueError)],
     ids=["float", "minus", "zero"],
 )
+
 def test_square_area_negative_tests(side_a, expected_exception):
     with pytest.raises(expected_exception):
         s = Square(side_a)
         s.area
+
 
 
 @pytest.mark.parametrize(
@@ -57,6 +60,7 @@ def test_square_area_negative_tests(side_a, expected_exception):
     [(5.5, ValueError), (-5, ValueError), (0, ValueError)],
     ids=["float", "minus", "zero"],
 )
+
 def test_square_perimeter_negative_tests(side_a, expected_exception):
     with pytest.raises(expected_exception):
         s = Square(side_a)
