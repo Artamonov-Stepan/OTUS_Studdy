@@ -3,9 +3,9 @@ import requests
 
 def pytest_addoption(parser):
     parser.addoption(
-        "--url=",
+        "--url",
         default="https://ya.ru",
-        help = "This is request url"
+        help="This is request url"
     )
     parser.addoption(
         "--status_code",
@@ -16,12 +16,10 @@ def pytest_addoption(parser):
 
 @pytest.fixture
 def base_url(request):
-    print(request.config.getoption("--url="))
     return request.config.getoption("--url")
 
 @pytest.fixture
 def expected_status_code(request):
-    print(request.config.getoption("--status_code"))
     return request.config.getoption("--status_code")
 
 def test_check_response(base_url, expected_status_code):
