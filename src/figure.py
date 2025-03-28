@@ -4,16 +4,16 @@ from abc import ABC, abstractmethod
 class Figure(ABC):
     @property
     @abstractmethod
-    def get_area(self):
-        pass
+    def area(self):
+
 
     @property
     @abstractmethod
-    def get_perimeter(self):
+    def perimeter(self):
         pass
 
-    @property
     def add_area(self, other_figure):
         if not isinstance(other_figure, Figure):
             raise ValueError("Должна быть фигура!")
-        return self.get_area + other_figure.get_area
+        return self.area + other_figure.area
+

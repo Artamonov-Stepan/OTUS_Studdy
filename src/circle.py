@@ -17,5 +17,3 @@ class Circle(Figure):
     @property
     def perimeter(self):
         return (self.radius * math.pi) * 2
-
-c = Circle(int(input()))
