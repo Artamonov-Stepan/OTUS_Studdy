@@ -1,6 +1,6 @@
 import requests
 import pytest
-# url = "https://dog.ceo/api/breed/hound/images"
+# BASE_URL = "https://dog.ceo/api/breeds/list/all"
 #
 # payload = {}
 # headers = {}

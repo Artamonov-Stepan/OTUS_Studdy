@@ -27,3 +27,4 @@ def test_check_response(base_url, expected_status_code):
     assert response.status_code == expected_status_code, (
         f"Expected response status code doesn't match. Expect: {expected_status_code}, got: {response.status_code}"
     )
+#Тут ничего не менялось
