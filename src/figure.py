@@ -5,7 +5,7 @@ class Figure(ABC):
     @property
     @abstractmethod
     def area(self):
-        pass
+
 
     @property
     @abstractmethod
@@ -16,3 +16,4 @@ class Figure(ABC):
         if not isinstance(other_figure, Figure):
             raise ValueError("Должна быть фигура!")
         return self.area + other_figure.area
+

@@ -2,13 +2,13 @@ from src.circle import Circle
 from src.triangle import Triangle
 import pytest
 
-
 @pytest.mark.parametrize(
     "side_a, side_b, side_c",
     [
         (3, 4, 5),
     ],
 )
+
 def test_valid_triangle_creation(side_a, side_b, side_c):
     t = Triangle(side_a, side_b, side_c)
     assert t.side_a == side_a
@@ -22,10 +22,10 @@ def test_valid_triangle_creation(side_a, side_b, side_c):
         (3, 4, 5, 6.0),
     ],
 )
+
 def test_square_area_positive_integer(side_a, side_b, side_c, expected_area):
     t = Triangle(side_a, side_b, side_c)
     assert t.area == expected_area, f"Ожидаем площадь равную {expected_area}"
-
 
 @pytest.mark.parametrize(
     "side_a, side_b, side_c, expected_perimeter",
@@ -61,32 +61,34 @@ def test_positive_add_area_with_other_figure(
     [(1, 1, 3, ValueError), (3, 4, 8, ValueError), (7, 9, 17, ValueError)],
     ids=["too_small_sum_1", "too_small_sum_2", "too_small_sum_3"],
 )
+
 def test_invalid_triangle_creation(side_a, side_b, side_c, expected_exception):
     with pytest.raises(expected_exception):
         Triangle(side_a, side_b, side_c)
-
 
 @pytest.mark.parametrize(
     "side_a, side_b, side_c, expected_exception",
     [(3.5, 4.5, 5.5, ValueError), (-3, -4, -5, ValueError), (0, 0, 0, ValueError)],
     ids=["float", "minus", "zero"],
 )
+
 def test_triangle_area_negative_tests(side_a, side_b, side_c, expected_exception):
     with pytest.raises(expected_exception):
         t = Triangle(side_a, side_b, side_c)
         t.area
 
 
+
 @pytest.mark.parametrize(
     "side_a, side_b, side_c, expected_exception",
     [(3.5, 4.5, 5.5, ValueError), (-3, -4, -5, ValueError), (0, 0, 0, ValueError)],
     ids=["float", "minus", "zero"],
 )
+
 def test_triangle_perimeter_negative_tests(side_a, side_b, side_c, expected_exception):
     with pytest.raises(expected_exception):
         t = Triangle(side_a, side_b, side_c)
         t.perimeter
-
 
 class NotAFigure:
       pass
@@ -100,3 +102,4 @@ def test_add_area_negative(side_a, side_b, side_c, not_a_figure):
     t = Triangle(side_a, side_b, side_c)
     with pytest.raises(ValueError):
         t.add_area(not_a_figure)
+

@@ -47,10 +47,12 @@ def test_positive_add_area_with_other_figure(radius, side_a, side_b, expected_ad
     [(5.5, ValueError), (-5, ValueError), (0, ValueError)],
     ids=["float", "minus", "zero"],
 )
+
 def test_circle_area_negative_tests(radius, expected_exception):
     with pytest.raises(expected_exception):
         c = Circle(radius)
         c.area
+
 
 
 @pytest.mark.parametrize(
@@ -58,11 +60,11 @@ def test_circle_area_negative_tests(radius, expected_exception):
     [(5.5, ValueError), (-5, ValueError), (0, ValueError)],
     ids=["float", "minus", "zero"],
 )
+
 def test_circle_perimeter_negative_tests(radius, expected_exception):
     with pytest.raises(expected_exception):
         c = Circle(radius)
         c.perimeter
-
 
 class NotAFigure:
         pass
@@ -76,3 +78,4 @@ def test_add_area_negative(radius, not_a_figure):
     c = Circle(radius)
     with pytest.raises(ValueError):
         c.add_area(not_a_figure)
+
