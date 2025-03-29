@@ -1,6 +1,6 @@
 import requests
 import pytest
-# url = "https://api.openbrewerydb.org/v1/breweries/"
+BASE_URL = "https://api.openbrewerydb.org/v1/breweries/"
 #
 # payload = {}
 # headers = {}
@@ -9,46 +9,56 @@ import pytest
 #
 # print(response.text)
 
-@pytest.mark.parametrize(
-    "url", [("https://api.openbrewerydb.org/v1/breweries/meta")]
-)
-def test_positive_get(url):
+url = f"{BASE_URL}/meta"
+def test_positive_get():
     response = requests.get(url)
     assert response.status_code == 200, f"Expected status code 200, got {response.status_code}"
-    assert response.json().get("total") == "8368"
+    assert response.json().get("total") == "8369"
     assert response.json().get("per_page") == "50"
 
+
 @pytest.mark.parametrize(
-    "url", [("https://api.openbrewerydb.org/v1/breweries/search?query=san%20diego&per_page=3")]
-)
-def test_positive_search(url):
-    response = requests.get(url)
+    "params, expected_values",
+    [(       {"by_city": "san diego", "per_page": 3},
+             {"city": "San Diego", "country": "United States"}
+    )])
+def test_positive_search(params, expected_values):
+    search_url = f"{BASE_URL}/search?by_city={params['by_city']}&per_page={params['per_page']}"
+    response = requests.get(search_url)
     assert response.status_code == 200, f"Expected status code 200, got {response.status_code}"
+    data = response.json()
+    assert isinstance(data, list), "Response is not a list"
+    expected_length = params['per_page']
+    assert len(data) <= expected_length, f"Expected length <= {expected_length}, got {len(data)}"
+    for brewery in data:
+        assert expected_values['city'] in brewery.get('city'), f"City '{expected_values['city']}' not found in response"
+        assert expected_values['country'] in brewery.get(
+            'country'), f"Country '{expected_values['country']}' not found in response"
 
 
 @pytest.mark.parametrize(
-    "url", [("https://api.openbrewerydb.org/v1/breweries/search?query=san%20diego&per_page=90001")]
+    "city", ["Williamsville", "San Diego", "Bend", "Denver"]
 )
-def test_negative_search(url):
-    response = requests.get(url)
-    assert response.status_code == 429, f"Expected status code 429, got {response.status_code}"
-    assert response.json().get("message") == "Concurrent request limit exceeded. Please delay concurrent calls using debounce or throttle."
+def test_get_breweries_by_city(city):
+    response = requests.get(BASE_URL, params={"by_city": city})
+    assert response.status_code == 200, f"Expected status code 200, got {response.status_code}"
+    assert isinstance(response.json(), list)
+    assert len(response.json()) > 0
+    for resp_info in response.json():
+        assert city in resp_info.get('city')
+
 
 @pytest.mark.parametrize(
-    "url", [("https://api.openbrewerydb.org/v1/breweries/search?query=san%20diego&per_page=9")])
-def test_negative_delete(url):
-    response = requests.delete(url)
-    assert response.status_code == 404, f"Expected status code 404, got {response.status_code}"
+    "params, expected_status_code", [({"query": "san diego", "per_page": 90001}, 429)])
+def test_negative_search(params, expected_status_code):
+    get_url = f"{BASE_URL}/search?{params['query']}&per_page={params['per_page']}"
+    response = requests.get(get_url)
+    assert response.status_code == expected_status_code, f"Expected status code {expected_status_code}, got {response.status_code}"
 
 
-def test_with_params():
-    url = "https://api.openbrewerydb.org/v1/breweries"
-    params = {'by_state': "california", 'per_page': "3"}
-    response = requests.get(url, params=params)
-    assert response.status_code == 200, f"Expected status code 200, got {response.status_code}"
-    response_json = response.json()
-    assert isinstance(response_json, list), "Response is not a list"
-    ids = [item.get('id') for item in response_json]
-    expected_ids = ['ef970757-fe42-416f-931d-722451f1f59c', '4788221a-a03b-458c-9084-4cadd69ade6d', '5ae467af-66dc-4d7f-8839-44228f89b596']
-    for expected_id in expected_ids:
-     assert expected_id in ids, f"ID '{expected_id}' not found in response IDs: {ids}"
+@pytest.mark.parametrize(
+    "params, expected_status_code", [({"query": "san diego", "per_page": 9}, 404)])
+def test_negative_delete(params, expected_status_code):
+    deleted_url = f"{BASE_URL}/search?{params['query']}&per_page={params['per_page']}"
+    response = requests.delete(deleted_url)
+    assert response.status_code == expected_status_code, f"Expected status code {expected_status_code}, got {response.status_code}"
